@@ -1,0 +1,1365 @@
+/* Reset and Base Styles */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', system_ui, sans-serif;
+  line-height: 1.6;
+  color: #e5e5e5;
+  background-color: #0a0a0a;
+  overflow-x: hidden;
+}
+
+h1, h2, h3 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Nav */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.3s ease;
+}
+
+.nav.scrolled {
+  background: rgba(10, 10, 10, 0.98);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.75rem;
+  font-weight: 900;
+  color: #fff;
+  text-decoration: none;
+}
+
+.nav-logo-img {
+  height: 48px;
+  width: auto;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+  align-items: center;
+}
+
+.nav-links a {
+  color: #e5e5e5;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  position: relative;
+}
+
+.nav-links a:hover {
+  color: #f4a261;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background: #f4a261;
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+.nav-cta {
+  background: #f4a261;
+  color: #0a0a0a;
+  padding: 10px 24px;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.nav-cta:hover {
+  background: #e76f51;
+  transform: translateY(-2px);
+}
+
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.nav-hamburger span {
+  display: block;
+  width: 28px;
+  height: 3px;
+  background: #e5e5e5;
+  transition: all 0.3s ease;
+}
+
+/* Mobile Nav */
+.nav-mobile {
+  display: none;
+  position: fixed;
+  top: 80px;
+  left: 0;
+  right: 0;
+  background: #0a0a0a;
+  padding: 2rem;
+  flex-direction: column;
+  gap: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 999;
+}
+
+.nav-mobile a {
+  font-size: 1.25rem;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  color: #e5e5e5;
+}
+
+.mobile-fb-cta {
+  background: #f4a261;
+  color: #0a0a0a;
+  text-align: center;
+  padding: 16px;
+  border-radius: 50px;
+  font-weight: 600;
+}
+
+/* Hero */
+.hero {
+  position: relative;
+  height: 100vh;
+  min-height: 700px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.65) contrast(1.1);
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(10,10,10,0.4), rgba(10,10,10,0.85));
+}
+
+.hero-grain {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 80px 80px;
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 720px;
+  padding-left: 2rem;
+}
+
+.hero-text {
+  padding-top: 80px;
+}
+
+.hero-eyebrow {
+  font-size: 1.1rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #f4a261;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.hero-title {
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  color: #fff;
+  margin-bottom: 1.5rem;
+}
+
+.hero-title em {
+  color: #f4a261;
+  font-style: italic;
+}
+
+.hero-lead {
+  font-size: 1.35rem;
+  max-width: 520px;
+  margin-bottom: 2.5rem;
+  color: #ddd;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 14px 32px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1.05rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: #f4a261;
+  color: #0a0a0a;
+}
+
+.btn-primary:hover {
+  background: #e76f51;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(244, 162, 97, 0.3);
+}
+
+.btn-fb {
+  background: #1877f2;
+  color: white;
+}
+
+.btn-fb:hover {
+  background: #0e5ed8;
+  transform: translateY(-3px);
+}
+
+.btn-ghost {
+  border: 2px solid #e5e5e5;
+  color: #e5e5e5;
+}
+
+.btn-ghost:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: #f4a261;
+  color: #f4a261;
+}
+
+.btn-ghost-light {
+  border: 2px solid rgba(255,255,255,0.7);
+  color: #e5e5e5;
+}
+
+.btn-ghost-light:hover {
+  border-color: #f4a261;
+  color: #f4a261;
+}
+
+.btn-large {
+  padding: 18px 40px;
+  font-size: 1.2rem;
+}
+
+/* Torn effect */
+.hero-torn {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(transparent, #0a0a0a);
+  z-index: 2;
+}
+
+/* Trust Bar */
+.trust-bar {
+  background: #111;
+  padding: 2.5rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.trust-bar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+.trust-stat {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.05rem;
+}
+
+.trust-icon {
+  font-size: 2rem;
+}
+
+.trust-label {
+  font-weight: 500;
+}
+
+.trust-divider {
+  width: 1px;
+  height: 32px;
+  background: rgba(255,255,255,0.15);
+}
+
+/* Sections */
+.section {
+  padding: 120px 0;
+}
+
+.dark-section {
+  background: #111;
+}
+
+/* Section Headers */
+.section-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.section-label {
+  display: inline-block;
+  background: rgba(244, 162, 97, 0.15);
+  color: #f4a261;
+  padding: 6px 20px;
+  border-radius: 50px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-bottom: 1rem;
+}
+
+.accent-red {
+  background: rgba(231, 111, 81, 0.2);
+  color: #e76f51;
+}
+
+.section-title {
+  font-size: clamp(2.8rem, 6vw, 4.2rem);
+  margin-bottom: 1rem;
+}
+
+.section-title.light {
+  color: #fff;
+}
+
+.section-intro {
+  max-width: 620px;
+  margin: 0 auto;
+  font-size: 1.25rem;
+  color: #bbb;
+}
+
+/* Cravings Grid */
+.cravings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+}
+
+.craving-card {
+  background: #1a1a1a;
+  border-radius: 24px;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.craving-card:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+  border-color: #f4a261;
+}
+
+.craving-card--hero {
+  grid-column: span 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.craving-img-wrap {
+  position: relative;
+  height: 280px;
+}
+
+.craving-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.craving-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10,10,10,0.85), transparent 40%);
+}
+
+.craving-info {
+  padding: 2rem;
+}
+
+.craving-tag {
+  display: inline-block;
+  background: #f4a261;
+  color: #0a0a0a;
+  font-size: 0.8rem;
+  padding: 4px 14px;
+  border-radius: 50px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.craving-name {
+  font-size: 1.65rem;
+  margin-bottom: 0.75rem;
+  color: #fff;
+}
+
+.craving-desc {
+  color: #bbb;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.craving-cta {
+  color: #f4a261;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.craving-cta:hover {
+  gap: 12px;
+}
+
+/* Loved List */
+.loved-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.loved-item {
+  background: #1a1a1a;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.25rem 2rem;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.loved-item:hover {
+  transform: scale(1.02);
+  border-color: #f4a261;
+}
+
+.loved-rank {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: #f4a261;
+  width: 60px;
+  flex-shrink: 0;
+}
+
+.loved-food-img {
+  width: 110px;
+  height: 110px;
+  border-radius: 16px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.loved-food-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.loved-info {
+  flex: 1;
+}
+
+.loved-name {
+  font-size: 1.4rem;
+  margin-bottom: 0.35rem;
+}
+
+.loved-sub {
+  color: #aaa;
+  font-size: 1.05rem;
+}
+
+.loved-fire {
+  font-size: 2.2rem;
+  flex-shrink: 0;
+}
+
+/* Categories */
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+}
+
+.category-card {
+  background: #1a1a1a;
+  border-radius: 20px;
+  padding: 2.5rem 1.75rem;
+  text-align: center;
+  transition: all 0.4s ease;
+  border: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  height: 100%;
+}
+
+.category-card:hover {
+  background: #222;
+  transform: translateY(-8px);
+  border-color: #f4a261;
+}
+
+.category-emoji {
+  font-size: 3.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.category-name {
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+.category-arrow {
+  font-size: 1.5rem;
+  color: #f4a261;
+  transition: transform 0.3s ease;
+}
+
+.category-card:hover .category-arrow {
+  transform: translateX(8px);
+}
+
+/* Story */
+.story-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  align-items: center;
+}
+
+.story-image-col {
+  position: relative;
+}
+
+.story-image-frame {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+}
+
+.story-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.story-badge {
+  position: absolute;
+  bottom: 32px;
+  right: 32px;
+  background: rgba(10,10,10,0.85);
+  color: #f4a261;
+  padding: 12px 24px;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 700;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.story-badge-year {
+  display: block;
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+.story-badge-num {
+  font-size: 2.2rem;
+  line-height: 1;
+}
+
+.story-text-col {
+  padding-right: 2rem;
+}
+
+.story-lead {
+  font-size: 1.45rem;
+  margin: 2rem 0 1.5rem;
+  color: #ddd;
+}
+
+.story-quote {
+  font-size: 1.5rem;
+  font-style: italic;
+  border-left: 6px solid #f4a261;
+  padding-left: 2rem;
+  margin: 2.5rem 0;
+  color: #ccc;
+}
+
+.story-values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+
+.value-pill {
+  background: rgba(244,162,97,0.1);
+  color: #f4a261;
+  padding: 10px 24px;
+  border-radius: 50px;
+  font-weight: 500;
+}
+
+/* Events */
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+}
+
+.event-card {
+  background: #1a1a1a;
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  transition: all 0.4s ease;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.event-card:hover {
+  transform: translateY(-10px);
+  border-color: #e76f51;
+}
+
+.event-icon {
+  font-size: 3.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.event-name {
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+}
+
+.event-desc {
+  color: #bbb;
+}
+
+.event-card--cta {
+  background: linear-gradient(135deg, #f4a261, #e76f51);
+  color: #0a0a0a;
+}
+
+/* Gallery */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.gallery-item {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  aspect-ratio: 16 / 11;
+}
+
+.gallery-item--large {
+  aspect-ratio: 16 / 9;
+  grid-column: span 2;
+}
+
+.gallery-item--wide {
+  grid-column: span 2;
+  aspect-ratio: 32 / 11;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gallery-item:hover img {
+  transform: scale(1.08);
+}
+
+.gallery-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.85));
+  padding: 2rem 1.75rem 1.75rem;
+  color: #fff;
+  font-size: 1.1rem;
+}
+
+/* Location */
+.location-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: center;
+}
+
+.location-left {
+  padding-right: 2rem;
+}
+
+.location-title {
+  font-size: 3.4rem;
+  margin: 1.5rem 0 1.25rem;
+}
+
+.location-body {
+  font-size: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+
+.location-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  margin-bottom: 3rem;
+}
+
+.location-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  font-size: 1.15rem;
+}
+
+.location-line svg {
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.location-link {
+  color: #f4a261;
+}
+
+.location-map-placeholder {
+  background: #1a1a1a;
+  border-radius: 24px;
+  height: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  color: #aaa;
+  position: relative;
+  overflow: hidden;
+}
+
+.map-label {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #f4a261;
+}
+
+.map-open-link {
+  color: #f4a261;
+  margin-top: 1rem;
+}
+
+/* FB CTA */
+.fb-cta-section {
+  position: relative;
+  padding: 140px 0;
+  overflow: hidden;
+}
+
+.fb-cta-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(10,10,10,0.75), rgba(10,10,10,0.9)), url('assets/hero/hero-food.jpg') center/cover no-repeat;
+  filter: brightness(0.7);
+}
+
+.fb-cta-inner {
+  position: relative;
+  z-index: 2;
+}
+
+.fb-cta-content {
+  max-width: 680px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.fb-cta-eyebrow {
+  color: #f4a261;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+}
+
+.fb-cta-title {
+  font-size: 3.2rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.fb-cta-body {
+  font-size: 1.3rem;
+  margin-bottom: 2.5rem;
+  color: #ddd;
+}
+
+/* Footer */
+.footer {
+  background: #0a0a0a;
+  padding: 100px 0 40px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.footer-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+}
+
+.footer-logo-img {
+  height: 52px;
+}
+
+.footer-tagline {
+  margin-top: 1.5rem;
+  font-size: 1.1rem;
+  max-width: 340px;
+}
+
+.footer-contact {
+  margin-top: 2.5rem;
+  display: flex;
+  gap: 2rem;
+}
+
+.footer-contact a {
+  color: #bbb;
+  transition: color 0.3s;
+}
+
+.footer-contact a:hover {
+  color: #f4a261;
+}
+
+.footer-links {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem 3rem;
+}
+
+.footer-links a {
+  color: #bbb;
+  transition: color 0.3s;
+}
+
+.footer-links a:hover {
+  color: #f4a261;
+}
+
+.footer-bottom {
+  margin-top: 5rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  font-size: 0.95rem;
+  color: #777;
+}
+
+.footer-bottom-inner {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* Floating FB */
+.fb-float {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 64px;
+  height: 64px;
+  background: #1877f2;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 25px rgba(24, 119, 242, 0.4);
+  z-index: 999;
+  transition: all 0.3s ease;
+}
+
+.fb-float:hover {
+  transform: scale(1.1);
+  box-shadow: 0 12px 35px rgba(24, 119, 242, 0.5);
+}
+
+/* Sticky Mobile CTA */
+.sticky-mobile-cta {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #0a0a0a;
+  border-top: 1px solid #222;
+  display: none;
+  z-index: 1100;
+  padding: 12px;
+  gap: 12px;
+}
+
+.sticky-fb, .sticky-call {
+  flex: 1;
+  text-align: center;
+  padding: 16px;
+  border-radius: 50px;
+  font-weight: 600;
+}
+
+.sticky-fb {
+  background: #1877f2;
+  color: white;
+}
+
+.sticky-call {
+  background: #1a1a1a;
+  border: 2px solid #f4a261;
+  color: #f4a261;
+}
+
+/* Scroll Progress */
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(to right, #f4a261, #e76f51);
+  z-index: 2000;
+  transition: width 0.1s ease;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .nav-links {
+    display: none;
+  }
+  
+  .nav-hamburger {
+    display: flex;
+  }
+  
+  .nav-mobile {
+    display: flex;
+  }
+  
+  .story-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  
+  .location-inner {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 0 1.25rem;
+  }
+  
+  .cravings-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .craving-card--hero {
+    grid-column: span 1;
+  }
+  
+  .hero-content {
+    padding-left: 1.25rem;
+  }
+  
+  .hero-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .events-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .gallery-item--large,
+  .gallery-item--wide {
+    grid-column: span 1;
+  }
+  
+  .loved-item {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.5rem;
+  }
+  
+  .loved-food-img {
+    width: 140px;
+    height: 140px;
+  }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* No image fallback */
+.no-img {
+  background: #222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  font-size: 1rem;
+}
+/* ============================================================
+   IMPLEMENTATION_003 — NETFLIX-STYLE HORIZONTAL SCROLL ROWS
+============================================================ */
+
+/* ── Shell: positions arrows + fade edges ── */
+.scroll-row-shell {
+  position: relative;
+}
+
+/* Edge fade masks — subtle left/right gradient veil */
+.scroll-row-shell::before,
+.scroll-row-shell::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 80px;
+  z-index: 2;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.scroll-row-shell::before {
+  left: 0;
+  background: linear-gradient(to right, var(--fade-color, #0a0a0a), transparent);
+}
+.scroll-row-shell::after {
+  right: 0;
+  background: linear-gradient(to left, var(--fade-color, #0a0a0a), transparent);
+}
+
+/* Dark section uses darker fade */
+.dark-section .scroll-row-shell {
+  --fade-color: #111;
+}
+.craving-categories .scroll-row-shell {
+  --fade-color: #0e0e0e;
+}
+
+/* ── The row itself ── */
+.scroll-row {
+  display: flex !important;
+  flex-direction: row !important;
+  overflow-x: auto;
+  overflow-y: visible;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  gap: 1.5rem;
+  padding: 1rem 2rem 2rem;   /* side padding so first/last card peek out */
+  grid-template-columns: unset !important;  /* override any grid declaration */
+
+  /* Hide scrollbar — visually clean, still accessible */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scroll-row::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── CRAVINGS scroll row: fixed-width cards ── */
+.cravings-grid.scroll-row .craving-card {
+  min-width: 320px;
+  max-width: 320px;
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+
+/* Remove the hero card 2-column span — not valid in scroll row */
+.cravings-grid.scroll-row .craving-card--hero {
+  grid-column: unset;
+  min-width: 400px;
+  max-width: 400px;
+}
+
+/* Hover lift in scroll context */
+.scroll-row .craving-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 32px 64px rgba(0,0,0,0.6);
+}
+
+/* ── LOVED scroll row: card layout instead of list ── */
+.loved-list.scroll-row {
+  align-items: stretch;
+  padding-bottom: 2rem;
+}
+
+.loved-list.scroll-row .loved-item {
+  min-width: 280px;
+  max-width: 280px;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1.75rem;
+  scroll-snap-align: start;
+  flex-shrink: 0;
+  gap: 1rem;
+}
+
+.loved-list.scroll-row .loved-food-img {
+  width: 100%;
+  height: 180px;
+  border-radius: 14px;
+}
+
+.loved-list.scroll-row .loved-rank {
+  font-size: 3rem;
+  width: auto;
+}
+
+.loved-list.scroll-row .loved-info {
+  flex: unset;
+}
+
+.loved-list.scroll-row .loved-fire {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  font-size: 1.6rem;
+}
+
+.loved-list.scroll-row .loved-item {
+  position: relative;
+}
+
+/* ── CATEGORIES scroll row: pill cards ── */
+.categories-grid.scroll-row {
+  padding-bottom: 2rem;
+}
+
+.categories-grid.scroll-row .category-card {
+  min-width: 180px;
+  max-width: 200px;
+  scroll-snap-align: start;
+  flex-shrink: 0;
+  padding: 2rem 1.25rem;
+}
+
+/* ── Arrow buttons ── */
+.scroll-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(20,20,20,0.85);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+  opacity: 0;          /* hidden until hover over shell */
+}
+
+.scroll-row-shell:hover .scroll-arrow {
+  opacity: 1;
+}
+
+.scroll-arrow:hover {
+  background: #f4a261;
+  color: #0a0a0a;
+  border-color: #f4a261;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.scroll-arrow--left {
+  left: -20px;
+}
+.scroll-arrow--right {
+  right: -20px;
+}
+
+/* Show arrows always on touch devices (no hover available) */
+@media (hover: none) {
+  .scroll-arrow {
+    display: none; /* touch devices use swipe — arrows not needed */
+  }
+  .scroll-row-shell::before,
+  .scroll-row-shell::after {
+    width: 40px;
+  }
+}
+
+/* ── Responsive tweaks ── */
+@media (max-width: 1024px) {
+  .scroll-arrow--left  { left: -12px; }
+  .scroll-arrow--right { right: -12px; }
+}
+
+@media (max-width: 768px) {
+  /* Slightly narrower cards on tablet */
+  .cravings-grid.scroll-row .craving-card,
+  .cravings-grid.scroll-row .craving-card--hero {
+    min-width: 280px;
+    max-width: 280px;
+  }
+  .loved-list.scroll-row .loved-item {
+    min-width: 240px;
+    max-width: 240px;
+  }
+  .categories-grid.scroll-row .category-card {
+    min-width: 160px;
+    max-width: 160px;
+  }
+  /* Pull shell to bleed edge on mobile for full-width swipe feel */
+  .scroll-row-shell {
+    margin: 0 -1.25rem;
+  }
+  .scroll-row {
+    padding: 0.75rem 1.25rem 1.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .cravings-grid.scroll-row .craving-card,
+  .cravings-grid.scroll-row .craving-card--hero {
+    min-width: 260px;
+    max-width: 260px;
+  }
+  .loved-list.scroll-row .loved-item {
+    min-width: 220px;
+    max-width: 220px;
+  }
+}
+
+/* ── Remove old grid overrides that conflict ── */
+/* These breakpoint rules existed for grid layout — override for scroll */
+@media (max-width: 640px) {
+  .cravings-grid.scroll-row {
+    grid-template-columns: unset;
+  }
+  .cravings-grid.scroll-row .craving-card--hero {
+    grid-column: unset;
+  }
+}

@@ -1,0 +1,65 @@
+# CONTINUE PROJECT
+
+Project:
+96 RANCH Restaurant LP
+
+Framework:
+Applied Engineering AI + Human Intelligence
+
+Current Status:
+IMPLEMENTATION_001 Complete ✅
+
+Attached Files:
+- index.html
+- style.css
+- script.js
+
+Task:
+
+Do a full project audit.
+
+Read all attached files first.
+
+Do NOT rebuild the website.
+
+Do NOT replace working sections.
+
+Analyze the current implementation and propose IMPLEMENTATION_002.
+
+Focus on:
+
+1. Image Mapping
+   - Map existing food images to correct sections
+   - Eliminate missing image placeholders
+   - Improve visual hierarchy
+
+2. Premium Food Experience
+   - Netflix-of-Food feeling
+   - Mouth-watering presentation
+   - Restaurant storytelling
+
+3. Social Ecosystem
+   - Facebook
+   - Instagram
+   - Pinterest
+   - Google Maps
+
+4. README.md
+   - Project overview
+   - Folder structure
+   - Asset guide
+   - Deployment guide
+
+5. IMPLEMENTATION_002.md
+   - Enhancement roadmap
+   - Prioritized tasks
+   - No code yet
+
+Output:
+
+README.md
+
+IMPLEMENTATION_002.md
+
+Only documentation.
+No code changes yet.
