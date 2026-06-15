@@ -129,9 +129,13 @@
           <p class="section-intro">Dishes that make you forget everything else. Made fresh, served hot.</p>
         </div>
 
-        <div class="cravings-grid">
+        <div class="scroll-row-shell">
+          <button class="scroll-arrow scroll-arrow--left" aria-label="Scroll left" onclick="scrollRow(this, -1)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <div class="cravings-grid scroll-row">
 
-          <div class="craving-card craving-card--hero">
+          <div class="craving-card">
             <div class="craving-img-wrap">
               <img src="assets/food/gallery/lemon_butter_fish.jpg" alt="Lemon Butter Fish — crispy, golden, drizzled with lemon butter sauce" onerror="this.parentNode.classList.add('no-img')" />
               <div class="craving-overlay"></div>
@@ -197,6 +201,10 @@
           </div>
 
         </div>
+          <button class="scroll-arrow scroll-arrow--right" aria-label="Scroll right" onclick="scrollRow(this, 1)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
       </div>
     </section>
 
@@ -213,7 +221,11 @@
           <p class="section-intro light">Real orders. Real favorites. The dishes people keep coming back for.</p>
         </div>
 
-        <div class="loved-list">
+        <div class="scroll-row-shell">
+          <button class="scroll-arrow scroll-arrow--left" aria-label="Scroll left" onclick="scrollRow(this, -1)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <div class="loved-list scroll-row">
           <div class="loved-item">
             <span class="loved-rank">#1</span>
             <div class="loved-food-img">
@@ -274,6 +286,10 @@
             <div class="loved-fire">👑</div>
           </div>
         </div>
+          <button class="scroll-arrow scroll-arrow--right" aria-label="Scroll right" onclick="scrollRow(this, 1)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
       </div>
     </section>
 
@@ -289,7 +305,11 @@
           </h2>
         </div>
 
-        <div class="categories-grid">
+        <div class="scroll-row-shell">
+          <button class="scroll-arrow scroll-arrow--left" aria-label="Scroll left" onclick="scrollRow(this, -1)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <div class="categories-grid scroll-row">
           <a href="https://facebook.com" target="_blank" rel="noopener" class="category-card">
             <div class="category-emoji">🍟</div>
             <span class="category-name">Something Crispy</span>
@@ -320,6 +340,10 @@
             <span class="category-name">Refreshing Drinks</span>
             <span class="category-arrow">→</span>
           </a>
+        </div>
+          <button class="scroll-arrow scroll-arrow--right" aria-label="Scroll right" onclick="scrollRow(this, 1)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
         </div>
       </div>
     </section>
