@@ -32,7 +32,7 @@ function closeMenu() {
     spans[2].style.transform = '';
   }
   
-  mobileNav.classList.remove('is-open');
+  mobileNav.style.display = 'none';
   mobileNav.setAttribute('aria-hidden', 'true');
 }
 
