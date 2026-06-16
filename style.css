@@ -857,7 +857,7 @@ img {
 .fb-cta-bg {
   position: absolute;
   inset: 0;
-  background: linear-gradient(rgba(10,10,10,0.75), rgba(10,10,10,0.9)), url('assets/hero/hero-food.jpg') center/cover no-repeat;
+  background: linear-gradient(rgba(10,10,10,0.75), rgba(10,10,10,0.9)), url('assets/hero/hero1.png') center/cover no-repeat;
   filter: brightness(0.7);
 }
 
@@ -1125,241 +1125,84 @@ img {
   color: #555;
   font-size: 1rem;
 }
-/* ============================================================
-   IMPLEMENTATION_003 — NETFLIX-STYLE HORIZONTAL SCROLL ROWS
-============================================================ */
-
-/* ── Shell: positions arrows + fade edges ── */
-.scroll-row-shell {
+/* ── Gallery image fixes ── */
+.gallery-item {
   position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #1a1a1a;
 }
-
-/* Edge fade masks — subtle left/right gradient veil */
-.scroll-row-shell::before,
-.scroll-row-shell::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 80px;
-  z-index: 2;
-  pointer-events: none;
-  transition: opacity 0.3s;
-}
-.scroll-row-shell::before {
-  left: 0;
-  background: linear-gradient(to right, var(--fade-color, #0a0a0a), transparent);
-}
-.scroll-row-shell::after {
-  right: 0;
-  background: linear-gradient(to left, var(--fade-color, #0a0a0a), transparent);
-}
-
-/* Dark section uses darker fade */
-.dark-section .scroll-row-shell {
-  --fade-color: #111;
-}
-.craving-categories .scroll-row-shell {
-  --fade-color: #0e0e0e;
-}
-
-/* ── The row itself ── */
-.scroll-row {
-  display: flex !important;
-  flex-direction: row !important;
-  overflow-x: auto;
-  overflow-y: visible;
-  scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  gap: 1.5rem;
-  padding: 1rem 2rem 2rem;   /* side padding so first/last card peek out */
-  grid-template-columns: unset !important;  /* override any grid declaration */
-
-  /* Hide scrollbar — visually clean, still accessible */
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-.scroll-row::-webkit-scrollbar {
-  display: none;
-}
-
-/* ── CRAVINGS scroll row: fixed-width cards ── */
-.cravings-grid.scroll-row .craving-card {
-  min-width: 320px;
-  max-width: 320px;
-  scroll-snap-align: start;
-  flex-shrink: 0;
-}
-
-/* Remove the hero card 2-column span — not valid in scroll row */
-.cravings-grid.scroll-row .craving-card--hero {
-  grid-column: unset;
-  min-width: 400px;
-  max-width: 400px;
-}
-
-/* Hover lift in scroll context */
-.scroll-row .craving-card:hover {
-  transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 32px 64px rgba(0,0,0,0.6);
-}
-
-/* ── LOVED scroll row: card layout instead of list ── */
-.loved-list.scroll-row {
-  align-items: stretch;
-  padding-bottom: 2rem;
-}
-
-.loved-list.scroll-row .loved-item {
-  min-width: 280px;
-  max-width: 280px;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 1.75rem;
-  scroll-snap-align: start;
-  flex-shrink: 0;
-  gap: 1rem;
-}
-
-.loved-list.scroll-row .loved-food-img {
+.gallery-item img {
   width: 100%;
-  height: 180px;
-  border-radius: 14px;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+.gallery-item:hover img {
+  transform: scale(1.05);
+}
+.gallery-item--large {
+  grid-row: span 2;
+}
+.gallery-item--wide {
+  grid-column: span 2;
 }
 
-.loved-list.scroll-row .loved-rank {
-  font-size: 3rem;
-  width: auto;
+/* ── Instagram link accent ── */
+a[href*="instagram"]:hover {
+  color: #e1306c !important;
+  border-color: #e1306c !important;
 }
 
-.loved-list.scroll-row .loved-info {
-  flex: unset;
-}
-
-.loved-list.scroll-row .loved-fire {
-  position: absolute;
-  top: 1.25rem;
-  right: 1.25rem;
-  font-size: 1.6rem;
-}
-
-.loved-list.scroll-row .loved-item {
-  position: relative;
-}
-
-/* ── CATEGORIES scroll row: pill cards ── */
-.categories-grid.scroll-row {
-  padding-bottom: 2rem;
-}
-
-.categories-grid.scroll-row .category-card {
-  min-width: 180px;
-  max-width: 200px;
-  scroll-snap-align: start;
-  flex-shrink: 0;
-  padding: 2rem 1.25rem;
-}
-
-/* ── Arrow buttons ── */
-.scroll-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.15);
-  background: rgba(20,20,20,0.85);
-  backdrop-filter: blur(10px);
-  color: #fff;
-  cursor: pointer;
+/* ── Footer social icons row ── */
+.footer-contact {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.25s ease;
-  opacity: 0;          /* hidden until hover over shell */
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
+  margin-top: 1.25rem;
+}
+.footer-contact a {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #888;
+  text-decoration: none;
+  transition: color 0.25s;
+}
+.footer-contact a:hover {
+  color: #f4a261;
 }
 
-.scroll-row-shell:hover .scroll-arrow {
-  opacity: 1;
+/* ── Location address phone line ── */
+.location-line a.location-link {
+  color: #f4a261;
+  text-decoration: none;
+  font-weight: 600;
+}
+.location-line a.location-link:hover {
+  text-decoration: underline;
 }
 
-.scroll-arrow:hover {
-  background: #f4a261;
-  color: #0a0a0a;
-  border-color: #f4a261;
-  transform: translateY(-50%) scale(1.1);
-}
-
-.scroll-arrow--left {
-  left: -20px;
-}
-.scroll-arrow--right {
-  right: -20px;
-}
-
-/* Show arrows always on touch devices (no hover available) */
-@media (hover: none) {
-  .scroll-arrow {
-    display: none; /* touch devices use swipe — arrows not needed */
-  }
-  .scroll-row-shell::before,
-  .scroll-row-shell::after {
-    width: 40px;
-  }
-}
-
-/* ── Responsive tweaks ── */
-@media (max-width: 1024px) {
-  .scroll-arrow--left  { left: -12px; }
-  .scroll-arrow--right { right: -12px; }
-}
-
+/* ── Mobile gallery ── */
 @media (max-width: 768px) {
-  /* Slightly narrower cards on tablet */
-  .cravings-grid.scroll-row .craving-card,
-  .cravings-grid.scroll-row .craving-card--hero {
-    min-width: 280px;
-    max-width: 280px;
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 200px;
   }
-  .loved-list.scroll-row .loved-item {
-    min-width: 240px;
-    max-width: 240px;
+  .gallery-item--large {
+    grid-row: span 1;
   }
-  .categories-grid.scroll-row .category-card {
-    min-width: 160px;
-    max-width: 160px;
-  }
-  /* Pull shell to bleed edge on mobile for full-width swipe feel */
-  .scroll-row-shell {
-    margin: 0 -1.25rem;
-  }
-  .scroll-row {
-    padding: 0.75rem 1.25rem 1.75rem;
+  .gallery-item--wide {
+    grid-column: span 2;
   }
 }
 
 @media (max-width: 480px) {
-  .cravings-grid.scroll-row .craving-card,
-  .cravings-grid.scroll-row .craving-card--hero {
-    min-width: 260px;
-    max-width: 260px;
+  .gallery-grid {
+    grid-template-columns: 1fr;
+    grid-auto-rows: 240px;
   }
-  .loved-list.scroll-row .loved-item {
-    min-width: 220px;
-    max-width: 220px;
-  }
-}
-
-/* ── Remove old grid overrides that conflict ── */
-/* These breakpoint rules existed for grid layout — override for scroll */
-@media (max-width: 640px) {
-  .cravings-grid.scroll-row {
-    grid-template-columns: unset;
-  }
-  .cravings-grid.scroll-row .craving-card--hero {
-    grid-column: unset;
+  .gallery-item--wide {
+    grid-column: span 1;
   }
 }
