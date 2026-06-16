@@ -15,7 +15,7 @@ git add .
 
 echo.
 echo Creating commit...
-git commit -m "Update 96 RANCH LP"
+git commit -m "Update 96 RANCH LP INDEX.HTML and ALL related files"
 
 echo.
 echo Pushing to GitHub...
