@@ -1,227 +1,18 @@
-// ============================================================
-// 96 RANCH — script.js (IMPLEMENTATION_005: Hero Food Carousel)
-// ============================================================
-
-// ── Hero Carousel ─────────────────────────────────────────────
-const CAROUSEL = {
-  slides: [],
-  dots: [],
-  current: 0,
-  total: 0,
-  timer: null,
-  progressEl: null,
-  interval: 6000,        // 6 seconds per slide
-  isRunning: false,
-  reducedMotion: false,
-
-  init() {
-    const container = document.getElementById('heroCarousel');
-    if (!container) return;
-
-    // Respect prefers-reduced-motion
-    this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    this.slides = Array.from(container.querySelectorAll('.hero-slide'));
-    this.total = this.slides.length;
-    if (this.total === 0) return;
-
-    // Build dots
-    this.buildDots();
-
-    // Build progress bar
-    this.buildProgress();
-
-    // Pause on hover / focus (desktop)
-    container.addEventListener('mouseenter', () => this.pause());
-    container.addEventListener('mouseleave', () => this.resume());
-
-    // Keyboard nav
-    container.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft')  this.prev();
-      if (e.key === 'ArrowRight') this.next();
-    });
-
-    // Touch swipe
-    this.initSwipe(container);
-
-    // Start — skip animation if user prefers reduced motion
-    if (!this.reducedMotion) {
-      this.start();
-    } else {
-      // Just show slide 0, no timer
-      this.goTo(0, false);
-    }
-  },
-
-  buildDots() {
-    const dotsContainer = document.querySelector('.hero-dots');
-    if (!dotsContainer) return;
-
-    for (let i = 0; i < this.total; i++) {
-      const btn = document.createElement('button');
-      btn.className = 'hero-dot' + (i === 0 ? ' hero-dot--active' : '');
-      btn.setAttribute('role', 'tab');
-      btn.setAttribute('aria-label', `Go to slide ${i + 1} of ${this.total}`);
-      btn.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
-      btn.dataset.index = i;
-      btn.addEventListener('click', () => {
-        this.goTo(i);
-        this.restart();
-      });
-      dotsContainer.appendChild(btn);
-      this.dots.push(btn);
-    }
-  },
-
-  buildProgress() {
-    const hero = document.querySelector('.hero');
-    if (!hero || this.reducedMotion) return;
-    const bar = document.createElement('div');
-    bar.className = 'hero-progress';
-    bar.id = 'heroProgress';
-    bar.setAttribute('role', 'progressbar');
-    bar.setAttribute('aria-hidden', 'true');
-    hero.appendChild(bar);
-    this.progressEl = bar;
-  },
-
-  goTo(index, animate = true) {
-    const prev = this.current;
-
-    // Deactivate current
-    if (this.slides[prev]) {
-      this.slides[prev].classList.remove('hero-slide--active');
-      this.slides[prev].setAttribute('aria-hidden', 'true');
-    }
-    if (this.dots[prev]) {
-      this.dots[prev].classList.remove('hero-dot--active');
-      this.dots[prev].setAttribute('aria-selected', 'false');
-    }
-
-    // Activate new
-    this.current = ((index % this.total) + this.total) % this.total;
-
-    if (this.slides[this.current]) {
-      this.slides[this.current].classList.add('hero-slide--active');
-      this.slides[this.current].setAttribute('aria-hidden', 'false');
-
-      // Re-trigger Ken Burns by forcing reflow
-      if (!this.reducedMotion) {
-        const img = this.slides[this.current].querySelector('.hero-slide-img');
-        if (img) {
-          img.style.animation = 'none';
-          void img.offsetWidth; // reflow
-          img.style.animation = '';
-        }
-      }
-    }
-    if (this.dots[this.current]) {
-      this.dots[this.current].classList.add('hero-dot--active');
-      this.dots[this.current].setAttribute('aria-selected', 'true');
-    }
-
-    // Progress bar reset
-    if (this.progressEl) {
-      this.progressEl.classList.remove('hero-progress--running');
-      void this.progressEl.offsetWidth; // reflow to restart transition
-    }
-  },
-
-  next() {
-    this.goTo(this.current + 1);
-  },
-
-  prev() {
-    this.goTo(this.current - 1);
-  },
-
-  start() {
-    if (this.isRunning || this.reducedMotion) return;
-    this.isRunning = true;
-
-    // Kick off progress bar immediately
-    if (this.progressEl) {
-      requestAnimationFrame(() => {
-        this.progressEl.classList.add('hero-progress--running');
-      });
-    }
-
-    this.timer = setInterval(() => {
-      this.next();
-      // Restart progress bar
-      if (this.progressEl) {
-        this.progressEl.classList.remove('hero-progress--running');
-        void this.progressEl.offsetWidth;
-        this.progressEl.classList.add('hero-progress--running');
-      }
-    }, this.interval);
-  },
-
-  pause() {
-    if (!this.isRunning) return;
-    clearInterval(this.timer);
-    this.timer = null;
-    this.isRunning = false;
-    // Pause progress bar visually
-    if (this.progressEl) {
-      const computed = getComputedStyle(this.progressEl).width;
-      const parentWidth = this.progressEl.parentElement.offsetWidth;
-      const pct = (parseFloat(computed) / parentWidth) * 100;
-      this.progressEl.classList.remove('hero-progress--running');
-      this.progressEl.style.transition = 'none';
-      this.progressEl.style.width = pct + '%';
-    }
-  },
-
-  resume() {
-    if (this.isRunning || this.reducedMotion) return;
-    // Restart the full interval from the current slide
-    this.progressEl && (this.progressEl.style.transition = '');
-    this.restart();
-  },
-
-  restart() {
-    this.pause();
-    // Short delay so the goTo transition looks clean
-    setTimeout(() => this.start(), 100);
-  },
-
-  initSwipe(el) {
-    let startX = 0, startY = 0;
-
-    el.addEventListener('touchstart', (e) => {
-      startX = e.touches[0].clientX;
-      startY = e.touches[0].clientY;
-    }, { passive: true });
-
-    el.addEventListener('touchend', (e) => {
-      const dx = e.changedTouches[0].clientX - startX;
-      const dy = e.changedTouches[0].clientY - startY;
-
-      // Only register horizontal swipe if it's clearly horizontal
-      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
-        dx < 0 ? this.next() : this.prev();
-        this.restart();
-      }
-    }, { passive: true });
-  }
-};
-
-// ── Mobile Menu Toggle ────────────────────────────────────────
+// Mobile Menu Toggle
 function toggleMenu(btn) {
   const mobileNav = document.getElementById('navMobile');
   const isExpanded = btn.getAttribute('aria-expanded') === 'true';
-
-  btn.setAttribute('aria-expanded', String(!isExpanded));
-  mobileNav.classList.toggle('is-open', !isExpanded);
-  mobileNav.setAttribute('aria-hidden', String(isExpanded));
-  document.body.style.overflow = isExpanded ? '' : 'hidden';
-
+  
+  btn.setAttribute('aria-expanded', !isExpanded);
+  mobileNav.style.display = isExpanded ? 'none' : 'flex';
+  mobileNav.setAttribute('aria-hidden', isExpanded);
+  
+  // Toggle hamburger lines
   const spans = btn.querySelectorAll('span');
   if (!isExpanded) {
-    spans[0].style.transform = 'rotate(45deg) translate(5.5px, 5.5px)';
+    spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
     spans[1].style.opacity = '0';
-    spans[2].style.transform = 'rotate(-45deg) translate(5.5px, -5.5px)';
+    spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
   } else {
     spans[0].style.transform = '';
     spans[1].style.opacity = '1';
@@ -232,10 +23,7 @@ function toggleMenu(btn) {
 function closeMenu() {
   const btn = document.querySelector('.nav-hamburger');
   const mobileNav = document.getElementById('navMobile');
-  if (!mobileNav) return;
-  mobileNav.classList.remove('is-open');
-  mobileNav.setAttribute('aria-hidden', 'true');
-  document.body.style.overflow = '';
+  
   if (btn) {
     btn.setAttribute('aria-expanded', 'false');
     const spans = btn.querySelectorAll('span');
@@ -243,183 +31,138 @@ function closeMenu() {
     spans[1].style.opacity = '1';
     spans[2].style.transform = '';
   }
+  
+  mobileNav.style.display = 'none';
+  mobileNav.setAttribute('aria-hidden', 'true');
 }
 
-// ── Netflix Row Scroll ────────────────────────────────────────
-function scrollRow(btn, direction) {
-  const shell = btn.closest('.scroll-row-shell');
-  if (!shell) return;
-  const row = shell.querySelector('.scroll-row');
-  if (!row) return;
-  row.scrollBy({ left: row.clientWidth * 0.8 * direction, behavior: 'smooth' });
-}
-
-function updateArrows(row) {
-  const shell = row.closest('.scroll-row-shell');
-  if (!shell) return;
-  const left  = shell.querySelector('.scroll-arrow--left');
-  const right = shell.querySelector('.scroll-arrow--right');
-  if (left)  left.style.opacity  = row.scrollLeft <= 8 ? '0' : '';
-  if (right) right.style.opacity = (row.scrollLeft + row.clientWidth >= row.scrollWidth - 8) ? '0' : '';
-}
-
-function initScrollRows() {
-  document.querySelectorAll('.scroll-row').forEach(row => {
-    updateArrows(row);
-    row.addEventListener('scroll', () => updateArrows(row), { passive: true });
-  });
-}
-
-function initRowKeyboard() {
-  document.querySelectorAll('.scroll-row').forEach(row => {
-    row.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowRight') { e.preventDefault(); row.scrollBy({ left: 300, behavior: 'smooth' }); }
-      if (e.key === 'ArrowLeft')  { e.preventDefault(); row.scrollBy({ left: -300, behavior: 'smooth' }); }
-    });
-  });
-}
-
-function initDragScroll() {
-  document.querySelectorAll('.scroll-row').forEach(row => {
-    let isDown = false, startX, scrollStart, moved = false;
-    row.addEventListener('mousedown', (e) => { isDown = true; moved = false; row.style.cursor = 'grabbing'; startX = e.pageX - row.offsetLeft; scrollStart = row.scrollLeft; });
-    row.addEventListener('mouseleave', () => { isDown = false; row.style.cursor = 'grab'; });
-    row.addEventListener('mouseup', () => { isDown = false; setTimeout(() => { row.style.cursor = ''; }, 80); });
-    row.addEventListener('mousemove', (e) => { if (!isDown) return; e.preventDefault(); moved = true; row.scrollLeft = scrollStart - (e.pageX - row.offsetLeft - startX) * 1.2; });
-    row.addEventListener('click', (e) => { if (moved) e.stopPropagation(); }, true);
-    row.style.cursor = 'grab';
-  });
-}
-
-// ── Nav scroll ───────────────────────────────────────────────
+// Navbar Scroll Effect
 function handleNavScroll() {
   const nav = document.getElementById('nav');
-  if (!nav) return;
-  nav.classList.toggle('scrolled', window.scrollY > 80);
+  if (window.scrollY > 80) {
+    nav.classList.add('scrolled');
+  } else {
+    nav.classList.remove('scrolled');
+  }
 }
 
-// ── Scroll progress bar ──────────────────────────────────────
+// Scroll Progress Bar
 function updateScrollProgress() {
-  const el = document.getElementById('scroll-progress');
-  if (!el) return;
-  const total = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-  el.style.width = total > 0 ? (window.scrollY / total) * 100 + '%' : '0%';
+  const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+  const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const scrolled = (winScroll / height) * 100;
+  document.getElementById('scroll-progress').style.width = scrolled + '%';
 }
 
-// ── Reveal on scroll ─────────────────────────────────────────
+// Reveal on Scroll
 function revealOnScroll() {
-  document.querySelectorAll('.reveal').forEach(el => {
-    if (el.getBoundingClientRect().top < window.innerHeight - 80) el.classList.add('active');
+  const reveals = document.querySelectorAll('.reveal');
+  
+  reveals.forEach(reveal => {
+    const windowHeight = window.innerHeight;
+    const elementTop = reveal.getBoundingClientRect().top;
+    const elementVisible = 120;
+    
+    if (elementTop < windowHeight - elementVisible) {
+      reveal.classList.add('active');
+    }
   });
 }
 
-// ── Sticky mobile CTA ────────────────────────────────────────
+// Sticky Mobile CTA
 function handleStickyCTA() {
-  const cta = document.getElementById('stickyCta');
-  if (!cta) return;
-  const show = window.innerWidth <= 900 && window.scrollY > window.innerHeight * 0.5;
-  cta.style.display = show ? 'flex' : 'none';
-  cta.setAttribute('aria-hidden', String(!show));
+  const stickyCta = document.getElementById('stickyCta');
+  if (!stickyCta) return;
+  
+  if (window.innerWidth <= 768 && window.scrollY > 600) {
+    stickyCta.style.display = 'flex';
+  } else {
+    stickyCta.style.display = 'none';
+  }
 }
 
-// ── Smooth scroll ────────────────────────────────────────────
+// Smooth Scroll for Anchor Links
 function smoothScroll() {
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', function(e) {
-      const id = this.getAttribute('href').substring(1);
-      if (!id) return;
-      const target = document.getElementById(id);
-      if (!target) return;
-      e.preventDefault();
-      window.scrollTo({ top: window.scrollY + target.getBoundingClientRect().top - 72, behavior: 'smooth' });
-      closeMenu();
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const targetId = this.getAttribute('href').substring(1);
+      if (!targetId) return;
+      
+      const targetElement = document.getElementById(targetId);
+      if (targetElement) {
+        e.preventDefault();
+        const navHeight = 80;
+        const elementPosition = targetElement.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.scrollY - navHeight;
+        
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+        
+        // Close mobile menu if open
+        closeMenu();
+      }
     });
   });
 }
 
-// ── Hero entrance ────────────────────────────────────────────
-function heroEntrance() {
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduced) return;
-
-  ['.hero-eyebrow', '.hero-title', '.hero-lead', '.hero-actions', '.hero-dots'].forEach((sel, i) => {
-    const el = document.querySelector(sel);
-    if (!el) return;
-    el.style.cssText += `opacity:0;transform:translateY(28px);transition:opacity 0.85s ease ${i * 0.15}s,transform 0.85s ease ${i * 0.15}s`;
-    requestAnimationFrame(() => setTimeout(() => {
-      el.style.opacity = '1';
-      el.style.transform = 'translateY(0)';
-    }, 60));
-  });
-}
-
-// ── Card stagger ─────────────────────────────────────────────
-function staggerCards() {
-  document.querySelectorAll('.scroll-row > *').forEach((el, i) => {
-    el.style.transitionDelay = (i * 0.06) + 's';
-    el.classList.add('reveal');
-  });
-}
-
-// ── Touch feedback ───────────────────────────────────────────
-function initTouchFeedback() {
-  document.querySelectorAll('.craving-card, .event-card, .category-card').forEach(card => {
-    card.addEventListener('touchstart', () => { card.style.transform = 'scale(0.97)'; card.style.transition = 'transform 0.1s'; }, { passive: true });
-    card.addEventListener('touchend', () => { card.style.transform = ''; }, { passive: true });
-  });
-}
-
-// ── Visibility API: pause when tab hidden ────────────────────
-function initVisibilityPause() {
-  document.addEventListener('visibilitychange', () => {
-    document.hidden ? CAROUSEL.pause() : CAROUSEL.resume();
-  });
-}
-
-// ── Init ─────────────────────────────────────────────────────
+// Initialize everything
 function init() {
-  // Carousel first — most visible above fold
-  CAROUSEL.init();
-  initVisibilityPause();
-
-  // Section reveals
-  document.querySelectorAll('.section, .trust-bar, .fb-cta-section').forEach((el, i) => {
-    el.classList.add('reveal');
-    el.style.transitionDelay = (i * 0.04) + 's';
+  // Add reveal classes to key sections
+  const sections = document.querySelectorAll('.section, .trust-bar, .fb-cta-section');
+  sections.forEach((section, index) => {
+    section.classList.add('reveal');
+    // Stagger the animations slightly
+    section.style.transitionDelay = (index * 0.05) + 's';
   });
-
-  staggerCards();
-  initScrollRows();
-  initRowKeyboard();
-  initDragScroll();
-  initTouchFeedback();
-
+  
+  // Event listeners
   window.addEventListener('scroll', () => {
     handleNavScroll();
     updateScrollProgress();
     revealOnScroll();
     handleStickyCTA();
-  }, { passive: true });
-
+  });
+  
+  // Initial calls
   handleNavScroll();
   updateScrollProgress();
   revealOnScroll();
   handleStickyCTA();
+  
+  // Smooth scroll
   smoothScroll();
-
-  document.addEventListener('click', (e) => {
-    const nav = document.getElementById('navMobile');
-    const btn = document.querySelector('.nav-hamburger');
-    if (nav && btn && nav.classList.contains('is-open') &&
-        !nav.contains(e.target) && !btn.contains(e.target)) closeMenu();
+  
+  // Close mobile menu when clicking outside
+  document.addEventListener('click', function(e) {
+    const mobileNav = document.getElementById('navMobile');
+    const hamburger = document.querySelector('.nav-hamburger');
+    
+    if (mobileNav && hamburger && 
+        !mobileNav.contains(e.target) && 
+        !hamburger.contains(e.target)) {
+      closeMenu();
+    }
   });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeMenu();
+  
+  // Keyboard escape support for menu
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      closeMenu();
+    }
   });
-
-  heroEntrance();
-  console.log('%c🍽️  96 RANCH — Carousel active. 20 dishes in rotation.', 'color:#f4a261;font-family:monospace;font-size:13px;');
+  
+  // Fake hero image load animation
+  const heroImg = document.getElementById('heroImg');
+  if (heroImg) {
+    heroImg.addEventListener('load', () => {
+      heroImg.style.opacity = '1';
+    });
+  }
+  
+  console.log('%c96 RANCH — Website initialized successfully 🍽️', 'color: #f4a261; font-family: monospace;');
 }
 
+// Run when DOM is ready
 document.addEventListener('DOMContentLoaded', init);
