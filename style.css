@@ -1218,11 +1218,12 @@ body.bossa-mode .nav {
 }
 
 /* ============================================================
-   LIQUID LOGO HERO — Implementation 007
+/* ============================================================
+   BRAND RITUAL HERO EXPERIENCE — Implementation 010
    ============================================================ */
 
-/* Full-screen intro overlay */
-.liquid-intro {
+/* ── RITUAL OVERLAY (full-screen black during formation) ────── */
+.ritual-overlay {
   position: absolute;
   inset: 0;
   z-index: 20;
@@ -1230,40 +1231,42 @@ body.bossa-mode .nav {
   align-items: center;
   justify-content: center;
   background: #000;
-  transition: opacity 0.8s ease;
+  transition: opacity 1.2s ease;
 }
 
-.liquid-intro.done {
+.ritual-overlay.done {
   opacity: 0;
   pointer-events: none;
 }
 
-/* Stage: centers all animation content */
-.liquid-stage {
+/* ── RITUAL STAGE (logo formation container) ────────────────── */
+.ritual-stage {
   position: relative;
-  width: min(420px, 90vw);
-  aspect-ratio: 420 / 480;
+  width: min(340px, 76vw);
+  aspect-ratio: 340 / 480;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+  /* starts centered, GSAP shrinks + moves to seal position */
 }
 
-/* Hidden SVG filter definitions */
+/* ── GOO FILTER ─────────────────────────────────────────────── */
 .liquid-filters {
   position: absolute;
-  width: 0;
-  height: 0;
+  width: 0; height: 0;
   overflow: hidden;
   pointer-events: none;
 }
 
-/* Goo droplet layer */
+/* ── GOO DROPLET LAYER ──────────────────────────────────────── */
 .goo-wrap {
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  pointer-events: none;
 }
 
 .goo-svg {
@@ -1272,8 +1275,8 @@ body.bossa-mode .nav {
   overflow: visible;
 }
 
-/* Logo SVG wrapper — floats above food bg after anim */
-.logo-svg-wrap {
+/* ── LOGO IMAGE (S3–S6) ─────────────────────────────────────── */
+.logo-img-wrap {
   position: absolute;
   inset: 0;
   display: flex;
@@ -1282,111 +1285,141 @@ body.bossa-mode .nav {
   opacity: 0;
 }
 
-.logo-svg {
+.logo-img {
   width: 100%;
   height: 100%;
-  overflow: visible;
-  filter: drop-shadow(0 0 24px rgba(0,0,0,0.9));
+  object-fit: contain;
+  filter: drop-shadow(0 4px 20px rgba(0,0,0,0.8))
+          drop-shadow(0 0 2px rgba(255,255,255,0.08));
+  user-select: none;
+  pointer-events: none;
 }
 
-/* Skip button */
-.liquid-skip {
+/* ── STAGE 4: TAGLINE MOMENT ────────────────────────────────── */
+/* Full-screen text flash — centered, before hero reveals */
+.ritual-tagline {
   position: absolute;
-  bottom: -48px;
-  right: 0;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 2rem;
+  pointer-events: none;
+  opacity: 0;           /* GSAP animates in/out */
+}
+
+.ritual-line {
+  font-family: 'Playfair Display', 'Georgia', serif;
+  font-size: clamp(1.1rem, 3.5vw, 2.2rem);
+  font-weight: 400;
+  color: #fff;
+  letter-spacing: 0.02em;
+  text-align: center;
+  line-height: 1.4;
+  opacity: 0;           /* staggered in by GSAP */
+}
+
+.ritual-line--em {
+  font-style: italic;
+  color: rgba(244, 162, 97, 0.9);
+  font-size: clamp(1rem, 3vw, 1.9rem);
+}
+
+/* ── SKIP BUTTON ─────────────────────────────────────────────── */
+.ritual-skip {
+  position: absolute;
+  bottom: 32px;
+  right: 32px;
   background: none;
-  border: 1px solid rgba(255,255,255,0.2);
-  color: rgba(255,255,255,0.4);
+  border: 1px solid rgba(255,255,255,0.16);
+  color: rgba(255,255,255,0.32);
   font-family: 'Inter', sans-serif;
-  font-size: 0.7rem;
-  letter-spacing: 0.1em;
-  padding: 6px 16px;
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 7px 20px;
   border-radius: 50px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: color 0.3s, border-color 0.3s;
   opacity: 0;
-  animation: skipFadeIn 0.6s 1.5s ease forwards;
+  animation: ritualSkipIn 0.5s 2s ease forwards;
+  z-index: 30;
 }
 
-.liquid-skip:hover {
-  color: rgba(255,255,255,0.8);
-  border-color: rgba(255,255,255,0.4);
+.ritual-skip:hover {
+  color: rgba(255,255,255,0.7);
+  border-color: rgba(255,255,255,0.35);
 }
 
-@keyframes skipFadeIn {
-  to { opacity: 1; }
+@keyframes ritualSkipIn { to { opacity: 1; } }
+
+/* ── STAGE 6: BRAND SEAL ─────────────────────────────────────── */
+/* Permanent floating logo — lives in #hero after overlay fades */
+.brand-seal {
+  position: absolute;
+  /* Top-center positioning, above food hero content */
+  top: 12%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(100px, 14vw, 180px);
+  z-index: 10;
+  opacity: 0;           /* GSAP fades in during S6 */
+  pointer-events: none;
 }
 
-/* Floating logo idle state (after animation completes) */
-.logo-svg-wrap.floating {
-  animation: logoFloat 5s ease-in-out infinite;
+.brand-seal-img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 12px rgba(0,0,0,0.75))
+          drop-shadow(0 0 1px rgba(255,255,255,0.1));
+  user-select: none;
+  pointer-events: none;
 }
 
-@keyframes logoFloat {
-  0%, 100% { transform: translateY(0px) scale(1); }
-  50%       { transform: translateY(-10px) scale(1.012); }
+/* ── S6: FLOATING ANIMATION ─────────────────────────────────── */
+/* 2-5px drift max. Organic. Bossa rhythm. No bounce. */
+.brand-seal.floating {
+  animation: sealFloat 5s ease-in-out infinite alternate;
 }
 
-/* Hero content — hidden during intro, revealed after */
+@keyframes sealFloat {
+  from { transform: translateX(-50%) translateY(0px);   }
+  to   { transform: translateX(-50%) translateY(-4px);  }
+}
+
+/* ── HERO CONTENT ────────────────────────────────────────────── */
 #heroContent {
-  transition: opacity 1s ease;
+  position: relative;
+  z-index: 5;
+  transition: opacity 1.4s ease;
 }
 
-#heroContent.visible {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
-
-/* Reduced motion — skip straight to final state */
+/* ── REDUCED MOTION ──────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  .liquid-intro {
-    display: none !important;
-  }
-  #heroContent {
-    opacity: 1 !important;
-    pointer-events: auto !important;
-  }
-  .logo-svg-wrap.floating {
-    animation: none;
-  }
+  .ritual-overlay   { display: none !important; }
+  .brand-seal       { opacity: 1; animation: none; }
+  .brand-seal.floating { animation: none; }
+  #heroContent      { opacity: 1 !important; pointer-events: auto !important; }
 }
 
-/* Tablet / mobile sizing */
+/* ── RESPONSIVE ──────────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .liquid-stage {
-    width: min(340px, 86vw);
+  .ritual-stage {
+    width: min(260px, 74vw);
   }
-  .liquid-skip {
-    font-size: 0.65rem;
-    bottom: -44px;
+  .ritual-skip {
+    bottom: 20px;
+    right: 20px;
+    font-size: 0.6rem;
+  }
+  .brand-seal {
+    top: 8%;
+    width: clamp(80px, 18vw, 130px);
+  }
+  .ritual-line {
+    font-size: clamp(1rem, 5vw, 1.4rem);
   }
 }
-
-/* ============================================================
-   LIQUID IDENTITY MOTION SYSTEM — Implementation 009 patches
-   ============================================================ */
-
-/* idle-stage: settled position after intro completes */
-.liquid-stage.idle-stage {
-  transform: translateY(-32px) scale(0.82);
-}
-
-/* Floating logo: perpetual gentle breath via GSAP (CSS fallback) */
-.logo-svg-wrap.floating {
-  animation: logoBreath 3.6s ease-in-out infinite alternate;
-}
-
-@keyframes logoBreath {
-  from { transform: translateY(0px)   scale(1);     }
-  to   { transform: translateY(-12px) scale(1.018); }
-}
-
-/* S7: hero content revealed — ensure text readable over logo */
-#heroContent.visible {
-  z-index: 4;
-}
-
-/* Liquid intro overlay z-index audit */
-.liquid-intro { z-index: 20; }
-.hero-content { z-index: 5; }
-.hero-bg      { z-index: 1; }

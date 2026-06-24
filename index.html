@@ -68,335 +68,59 @@
       <div class="hero-bg">
         <img
           src="assets/hero/hero1.png"
-          alt="96 RANCH signature dishes — a feast of Filipino comfort food"
+          alt="96 RANCH signature dishes"
           class="hero-img"
           id="heroImg"
           onerror="this.style.display='none'"
         />
         <div class="hero-overlay" aria-hidden="true"></div>
-        <div class="hero-grain" aria-hidden="true"></div>
+        <div class="hero-grain"  aria-hidden="true"></div>
       </div>
 
       <!-- ============================================================
-           LIQUID LOGO HERO — Implementation 007
+           BRAND RITUAL HERO EXPERIENCE — Implementation 010
       ============================================================ -->
-      <div class="liquid-intro" id="liquidIntro" aria-hidden="true">
-        <div class="liquid-stage" id="liquidStage">
+      <div class="ritual-overlay" id="ritualOverlay" aria-hidden="true">
 
-          <!-- SVG filter for goo metaball effect -->
+        <div class="ritual-stage" id="ritualStage">
           <svg class="liquid-filters" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <filter id="goo" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blur" />
+              <filter id="goo" x="-25%" y="-25%" width="150%" height="150%"
+                      color-interpolation-filters="sRGB">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="16" result="blur"/>
                 <feColorMatrix in="blur" mode="matrix"
-                  values="1 0 0 0 0
-                          0 1 0 0 0
-                          0 0 1 0 0
-                          0 0 0 28 -10"
-                  result="goo" />
-                <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+                  values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 32 -12"
+                  result="goo"/>
+                <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
               </filter>
             </defs>
           </svg>
 
-          <!-- GOO droplet layer -->
           <div class="goo-wrap" id="gooWrap">
-            <svg class="goo-svg" id="gooSvg" viewBox="0 0 500 708" xmlns="http://www.w3.org/2000/svg">
+            <svg class="goo-svg" id="gooSvg" viewBox="0 0 400 560" xmlns="http://www.w3.org/2000/svg">
               <g id="gooLayer" filter="url(#goo)"></g>
             </svg>
           </div>
 
-          <!-- Final traced logo SVG (hidden until State 4) -->
-          <!-- viewBox: 500x708 matching pixel-extracted aspect ratio -->
-          <div class="logo-svg-wrap" id="logoSvgWrap">
-            <svg class="logo-svg" id="logoSvg" viewBox="0 0 500 708" xmlns="http://www.w3.org/2000/svg" aria-label="96 Ranch liquid logo">
-              <defs>
-                <!-- Glossy dark ink gradient — reads as liquid black on black hero -->
-                <linearGradient id="inkGloss" x1="25%" y1="0%" x2="75%" y2="100%">
-                  <stop offset="0%"   stop-color="#3a3a3a" />
-                  <stop offset="20%"  stop-color="#1e1e1e" />
-                  <stop offset="55%"  stop-color="#0d0d0d" />
-                  <stop offset="100%" stop-color="#050505" />
-                </linearGradient>
-                <radialGradient id="inkSpecular" cx="32%" cy="28%" r="52%">
-                  <stop offset="0%"   stop-color="#555" stop-opacity="0.9" />
-                  <stop offset="45%"  stop-color="#191919" />
-                  <stop offset="100%" stop-color="#060606" />
-                </radialGradient>
-                <!-- Wet ink highlight stroke -->
-                <filter id="inkShadow" x="-5%" y="-5%" width="110%" height="110%">
-                  <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.8"/>
-                </filter>
-              </defs>
-
-              <g id="logoMark" filter="url(#inkShadow)">
-
-                <!--
-                  ══════════════════════════════════════════════
-                  HANDLE + KNOB (top)
-                  Pixel data: top y=20, center x=249
-                  Knob width ~86px at y=40, narrows to ~65px at y=130
-                  Hole: ellipse cx=249 cy=75 rx=14 ry=16
-                  ══════════════════════════════════════════════
-                -->
-                <path
-                  id="logoHandle"
-                  fill-rule="evenodd"
-                  fill="url(#inkGloss)"
-                  stroke="rgba(255,255,255,0.1)"
-                  stroke-width="0.8"
-                  d="
-                    M249,20
-                    C268,20 292,35 292,58
-                    C292,82 278,101 260,108
-                    L258,135 L240,135 L238,108
-                    C220,101 206,82 206,58
-                    C206,35 230,20 249,20 Z
-
-                    M249,60
-                    C240,60 234,67 234,75
-                    C234,83 241,90 249,90
-                    C257,90 264,83 264,75
-                    C264,67 258,60 249,60 Z
-                  "
-                />
-
-                <!--
-                  ══════════════════════════════════════════════
-                  CUTTING BOARD FRAME (main body)
-                  Pixel data:
-                    shoulders at y=153: x=214-280
-                    widens organically to widest at y=281: x=115-387
-                    sides taper slightly, bottom liquid drip blob
-                    inner white cavity: roughly x=162-362, y=200-590
-                  ══════════════════════════════════════════════
-                -->
-                <path
-                  id="logoBoard"
-                  fill-rule="evenodd"
-                  fill="url(#inkSpecular)"
-                  stroke="rgba(255,255,255,0.08)"
-                  stroke-width="0.8"
-                  d="
-                    M215,138
-                    C222,136 236,134 249,134
-                    C262,134 276,136 283,138
-                    C310,148 360,172 380,200
-                    C400,228 405,265 400,295
-                    C396,320 388,345 385,380
-                    C382,415 385,450 383,490
-                    C380,530 372,565 362,590
-                    C348,618 320,638 295,648
-                    C282,654 270,658 258,662
-                    C264,670 268,680 264,690
-                    C260,700 249,705 249,705
-                    C249,705 238,700 234,690
-                    C230,680 234,670 240,662
-                    C228,658 216,654 203,648
-                    C178,638 150,618 136,590
-                    C126,565 118,530 115,490
-                    C113,450 116,415 113,380
-                    C111,345 103,320 99,295
-                    C94,265 99,228 119,200
-                    C139,172 188,148 215,138 Z
-
-                    M168,210
-                    C178,205 200,200 249,200
-                    C298,200 320,205 330,210
-                    C350,220 358,240 358,260
-                    L358,560
-                    C358,575 348,588 333,592
-                    C308,598 280,600 249,600
-                    C218,600 190,598 165,592
-                    C150,588 140,575 140,560
-                    L140,260
-                    C140,240 148,220 168,210 Z
-                  "
-                />
-
-                <!--
-                  ══════════════════════════════════════════════
-                  SPOON (left side)
-                  Bowl: center ~(92,282), width ~77px, height ~90px
-                  Handle: x≈88-95, y=370-630, thin ~8px
-                  Liquid drip merges into board bottom
-                  ══════════════════════════════════════════════
-                -->
-                <path
-                  id="logoSpoon"
-                  fill="url(#inkGloss)"
-                  stroke="rgba(255,255,255,0.12)"
-                  stroke-width="0.6"
-                  d="
-                    M92,215
-                    C115,215 135,232 138,258
-                    C140,275 134,293 122,305
-                    C113,314 105,318 98,320
-                    L95,370
-                    L90,370
-                    L87,320
-                    C79,318 71,314 62,305
-                    C50,293 44,275 46,258
-                    C49,232 69,215 92,215 Z
-
-                    M88,370
-                    C86,390 84,420 84,460
-                    C84,500 86,530 88,555
-                    C88,568 90,578 93,582
-                    C96,578 98,568 98,555
-                    C100,530 102,500 102,460
-                    C102,420 100,390 98,370
-                    Z
-                  "
-                />
-
-                <!--
-                  ══════════════════════════════════════════════
-                  FORK (right side)
-                  Tines: 3 prongs, approx x=376,386,396 top y=182
-                  Handle: x≈399-412, y=282-555, width ~14px
-                  Base: merges with board/liquid drip
-                  ══════════════════════════════════════════════
-                -->
-                <path
-                  id="logoFork"
-                  fill="url(#inkGloss)"
-                  stroke="rgba(255,255,255,0.12)"
-                  stroke-width="0.6"
-                  d="
-                    M374,182 L374,248
-                    M385,182 L385,248
-                    M396,182 L396,248
-
-                    M370,248
-                    C370,262 374,272 385,274
-                    C396,272 400,262 400,248
-                    L400,182 L396,182 L396,248
-                    L385,250 L374,248 L374,182 L370,182 Z
-
-                    M378,274
-                    L378,555
-                    C378,568 382,578 385,582
-                    C388,578 392,568 392,555
-                    L392,274
-                    Z
-                  "
-                />
-
-                <!--
-                  ══════════════════════════════════════════════
-                  LIQUID BOTTOM BLOB (ink pooling at base)
-                  Pixel data: y≈605-670, organic drip shape
-                  ══════════════════════════════════════════════
-                -->
-                <path
-                  id="logoDrip"
-                  fill="url(#inkGloss)"
-                  d="
-                    M180,618
-                    C190,610 215,605 249,605
-                    C283,605 308,610 318,618
-                    C335,630 342,648 336,662
-                    C328,678 305,688 278,692
-                    C272,693 264,694 260,690
-                    C256,686 254,680 249,680
-                    C244,680 242,686 238,690
-                    C234,694 226,693 220,692
-                    C193,688 170,678 162,662
-                    C156,648 163,630 180,618 Z
-                  "
-                />
-
-              </g>
-
-              <!-- Typography: 96 — potrace-traced from 96inklogo.png, locked brand asset -->
-              <g id="logoType96Group" opacity="0"
-                 transform="translate(155.275,486.240) scale(0.01630,-0.01630)"
-                 fill="rgba(12,12,12,0.93)" stroke="none">
-              <path d="M7270 6018 c-80 -8 -115 -16 -320 -75 -182 -52 -303 -108 -402 -186
-              -71 -54 -46 -73 43 -31 275 132 391 160 759 179 140 8 347 -9 455 -36 213 -53
-              247 -63 335 -99 30 -12 84 -29 120 -37 36 -9 74 -24 85 -34 11 -10 31 -20 45
-              -22 44 -9 115 -46 172 -89 19 -16 38 -28 43 -28 4 0 24 -13 44 -29 20 -15 48
-              -31 64 -35 15 -3 36 -15 47 -26 19 -19 50 -27 50 -14 0 10 -60 85 -109 137
-              -46 48 -174 140 -212 152 -11 4 -52 26 -91 51 -40 24 -76 44 -80 44 -4 0 -33
-              12 -64 26 -287 131 -633 184 -984 152z"/>
-              <path d="M6890 5645 c-138 -30 -258 -75 -413 -156 -94 -50 -264 -134 -282
-              -140 -39 -14 -177 -109 -194 -134 -36 -53 -38 -93 -6 -105 23 -9 26 -14 21
-              -38 -7 -26 -57 -106 -80 -127 -21 -19 -96 -118 -96 -126 0 -5 -7 -9 -15 -9
-              -93 0 -160 -855 -112 -1429 9 -102 19 -226 22 -276 23 -349 113 -806 211
-              -1070 14 -38 32 -91 39 -118 54 -188 270 -510 449 -669 92 -82 130 -109 231
-              -163 17 -9 50 -29 75 -45 25 -17 61 -37 80 -46 19 -9 39 -22 43 -30 4 -8 18
-              -14 31 -14 12 0 31 -7 42 -15 19 -14 19 -15 -3 -21 -55 -15 -22 -29 87 -38 36
-              -3 127 -12 203 -21 145 -17 172 -15 336 29 30 8 61 12 68 9 7 -3 24 2 37 11
-              36 23 104 36 130 25 44 -20 190 51 280 136 42 40 16 45 -53 11 -101 -52 -95
-              -36 32 79 213 193 387 495 471 820 8 28 20 73 29 100 17 55 50 205 67 305 6
-              36 15 83 20 105 5 22 11 72 15 110 4 39 14 122 23 185 21 150 24 802 4 990
-              -25 239 -62 448 -99 565 -34 108 -122 344 -138 369 -7 12 -18 38 -24 58 -7 20
-              -19 42 -27 48 -7 7 -14 21 -14 30 0 10 -10 31 -23 47 -12 15 -28 39 -35 53
-              -12 27 -74 124 -135 213 -39 58 -209 219 -287 273 -145 101 -322 182 -475 220
-              -140 34 -379 34 -535 -1z"/>
-              <path d="M6620 1021 c0 -12 180 -99 223 -107 35 -6 39 -4 35 12 -2 14 -13 20
-              -38 22 -19 2 -44 12 -55 22 -34 31 -165 72 -165 51z"/>
-              <path d="M1155 9015 c-5 -1 -55 -13 -110 -25 -55 -13 -109 -28 -120 -35 -11
-              -7 -36 -16 -54 -20 -32 -7 -138 -58 -221 -107 -187 -111 -343 -267 -407 -408
-              -48 -104 -52 -115 -64 -160 -14 -56 -68 -219 -80 -241 -5 -9 -20 -59 -33 -110
-              -14 -52 -30 -93 -36 -91 -28 6 -30 -77 -27 -1241 3 -1192 3 -1192 30 -1284 74
-              -248 180 -427 361 -608 276 -275 494 -387 859 -440 116 -17 156 -17 380 1 95
-              8 105 -9 15 -25 -285 -49 -500 -34 -758 54 -128 44 -229 87 -287 121 -30 19
-              -57 34 -60 34 -2 0 -28 18 -57 39 -58 43 -183 111 -203 111 -39 0 27 -102 105
-              -161 20 -15 49 -37 64 -49 153 -118 361 -204 573 -236 174 -27 483 -14 610 25
-              163 50 199 62 215 72 8 5 32 17 53 26 38 16 45 27 27 38 -5 3 -10 13 -10 21 0
-              13 10 14 55 9 52 -7 55 -6 66 18 8 17 35 37 78 58 36 17 90 42 118 56 138 66
-              449 338 510 445 34 60 62 224 83 483 6 77 16 190 23 250 19 175 14 1000 -7
-              1200 -29 282 -36 337 -45 374 -5 20 -15 72 -21 116 -29 207 -108 455 -235 740
-              -136 305 -198 400 -384 585 -129 129 -193 173 -371 258 -79 38 -217 82 -314
-              102 -44 9 -296 13 -321 5z"/>
-              <path d="M3200 8161 c0 -22 16 -36 24 -22 8 12 -3 41 -15 41 -5 0 -9 -9 -9
-              -19z"/>
-              <path d="M2445 4474 c-11 -3 -50 -27 -85 -55 -36 -27 -76 -57 -90 -66 -14 -10
-              -53 -43 -88 -74 -54 -49 -207 -161 -245 -180 -32 -16 -54 -27 -72 -37 -71 -39
-              -170 -74 -345 -121 -223 -61 -646 -89 -850 -57 -234 37 -484 110 -622 182 -48
-              24 -48 24 -48 -1486 0 -1511 0 -1511 47 -1484 27 15 61 38 76 51 16 13 34 23
-              41 23 7 0 21 9 31 20 10 11 23 20 30 20 7 0 20 9 30 20 10 11 26 20 35 20 9 0
-              27 11 40 25 13 14 28 25 34 25 6 1 36 16 66 35 30 19 69 41 85 50 49 24 226
-              145 320 217 230 176 418 334 511 430 152 154 355 389 474 548 98 131 230 323
-              230 334 0 2 27 45 60 95 33 50 60 93 60 96 0 3 49 106 109 228 60 122 112 233
-              116 247 4 14 14 34 21 45 8 11 14 26 14 34 0 8 9 33 19 55 50 105 94 223 122
-              326 11 41 27 98 34 125 65 236 66 241 32 281 -21 24 -31 27 -98 30 -41 1 -83
-              0 -94 -2z"/>
-              <path d="M635 1410 c-4 -6 -23 -18 -43 -28 -41 -20 -54 -42 -23 -42 12 0 31
-              11 42 24 12 13 32 27 45 30 13 4 24 11 24 16 0 13 -37 13 -45 0z"/>
-              <path d="M487 1323 c-13 -12 -7 -23 12 -23 10 0 24 7 31 15 10 13 9 15 -12 15
-              -14 0 -28 -3 -31 -7z"/>
-              <path d="M430 1293 c-8 -3 -26 -14 -39 -24 -13 -11 -30 -19 -37 -19 -19 0
-              -101 -57 -108 -75 -3 -8 -12 -15 -21 -15 -8 0 -15 -4 -15 -10 0 -17 24 -11 80
-              20 30 16 67 34 83 41 15 6 27 15 27 19 0 4 16 17 35 29 49 28 45 53 -5 34z"/>
-              </g>
-
-              <!-- Typography: RANCH -->
-              <text
-                id="logoTypeRanch"
-                x="249" y="538"
-                text-anchor="middle"
-                font-family="'Inter', 'Helvetica Neue', Arial, sans-serif"
-                font-size="42"
-                font-weight="800"
-                fill="rgba(14,14,14,0.94)"
-                letter-spacing="16"
-                opacity="0"
-              >RANCH</text>
-
-            </svg>
+          <div class="logo-img-wrap" id="logoImgWrap">
+            <img src="assets/logo/96-liquid-frame.png" alt="96 Ranch"
+                 class="logo-img" id="logoImg" draggable="false"/>
           </div>
+        </div>
 
-        </div><!-- /liquid-stage -->
+        <!-- Stage 4: Tagline moment -->
+        <div class="ritual-tagline" id="ritualTagline">
+          <p class="ritual-line" id="ritualLine1">Some meals fill your stomach.</p>
+          <p class="ritual-line ritual-line--em" id="ritualLine2">Some meals bring people together.</p>
+        </div>
 
-        <!-- Skip button -->
-        <button class="liquid-skip" id="liquidSkip" aria-label="Skip intro animation">
-          Skip
-        </button>
+        <button class="ritual-skip" id="ritualSkip" aria-label="Skip intro">Skip</button>
+      </div>
 
-      </div><!-- /liquid-intro -->
+      <!-- Stage 6: Permanent floating brand seal -->
+      <div class="brand-seal" id="brandSeal" aria-hidden="true">
+        <img src="assets/logo/96-liquid-frame.png" alt="" class="brand-seal-img" draggable="false"/>
+      </div>
 
       <div class="hero-content" id="heroContent" style="opacity:0;pointer-events:none;">
         <div class="hero-text">
@@ -423,6 +147,7 @@
 
       <div class="hero-torn" aria-hidden="true"></div>
     </section>
+
 
     <!-- ============================================================
          TRUST STATS
