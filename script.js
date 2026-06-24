@@ -216,164 +216,155 @@ function init() {
 // Run when DOM is ready
 document.addEventListener('DOMContentLoaded', init);
 // ============================================================
-// LIQUID LOGO HERO — Implementation 007
+// LIQUID IDENTITY MOTION SYSTEM — Implementation 009
+// 8-state sequence. Potrace-traced 96. Apple pacing. Bossa rhythm.
 // ============================================================
 
 (function () {
 
-  // Cluster zones mapped to real logo regions (500×708 viewBox)
-  // Derived from pixel extraction of 96inklogo.png
+  // ── Cluster zones — real logo geometry, 500×708 viewBox ────────────────
   var CLUSTERS = {
-    handle: { cx: 249, cy:  75, r: 46, count: 10 },  // top knob
-    board:  { cx: 249, cy: 390, r: 110, count: 18 },  // main cutting board body
-    spoon:  { cx:  92, cy: 280, r:  55, count: 14 },  // spoon bowl + handle
-    fork:   { cx: 385, cy: 370, r:  50, count: 14 }   // fork tines + handle
+    handle: { cx: 249, cy:  72, r: 44, count: 10 },
+    board:  { cx: 249, cy: 388, r: 108, count: 20 },
+    spoon:  { cx:  90, cy: 278, r:  52, count: 14 },
+    fork:   { cx: 388, cy: 368, r:  48, count: 12 }
   };
 
   var droplets = [];
   var introTl  = null;
   var idleTl   = null;
+  var done     = false;
 
-  function randBetween(a, b) {
-    return a + Math.random() * (b - a);
-  }
+  function rand(a, b) { return a + Math.random() * (b - a); }
 
+  // ── State 1: inject droplet circles into gooLayer ──────────────────────
   function createDroplets() {
-    var gooLayer = document.getElementById('gooLayer');
-    if (!gooLayer) return;
+    var layer = document.getElementById('gooLayer');
+    if (!layer) return;
 
-    var clusterKeys = Object.keys(CLUSTERS);
-
-    clusterKeys.forEach(function (key) {
+    Object.keys(CLUSTERS).forEach(function (key) {
       var c = CLUSTERS[key];
       for (var i = 0; i < c.count; i++) {
-        // Random scatter position (will be pulled to cluster in State 2)
-        var sx = randBetween(30, 470);
-        var sy = randBetween(30, 678);
-        var r  = randBetween(4, 10);
-
-        var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        circle.setAttribute('cx', sx);
-        circle.setAttribute('cy', sy);
-        circle.setAttribute('r',  r);
-        circle.setAttribute('fill', '#111111');
-        circle.setAttribute('opacity', '0');
-        gooLayer.appendChild(circle);
-
-        droplets.push({ el: circle, cluster: key, cx: c.cx, cy: c.cy, r: r, sx: sx, sy: sy });
+        var el = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        el.setAttribute('cx',   rand(20, 480));
+        el.setAttribute('cy',   rand(20, 688));
+        el.setAttribute('r',    rand(4, 11));
+        el.setAttribute('fill', '#0f0f0f');
+        el.setAttribute('opacity', '0');
+        layer.appendChild(el);
+        droplets.push({ el: el, key: key, c: c, r: parseFloat(el.getAttribute('r')) });
       }
     });
   }
 
   function buildTimeline() {
-    if (typeof gsap === 'undefined') {
-      // GSAP not loaded — skip straight to final
-      completeIntro();
-      return;
-    }
+    if (typeof gsap === 'undefined') { completeIntro(); return; }
 
     introTl = gsap.timeline({ onComplete: onIntroComplete });
 
-    // ── State 1 (~0–1.1s): droplets appear scattered ──────────────────────
-    droplets.forEach(function (d, i) {
+    // ── S1 (0–1.2s): black droplets appear, scattered ───────────────────
+    droplets.forEach(function (d) {
       introTl.to(d.el, {
         attr: { opacity: 1 },
-        duration: 0.35,
-        ease: 'back.out(1.4)',
-        delay: randBetween(0, 0.9)
-      }, 0);
+        duration: rand(0.25, 0.45),
+        ease: 'back.out(1.6)'
+      }, rand(0, 1.0));
     });
 
-    // ── State 2 (~1.1–3.1s): gather toward cluster centroids ──────────────
+    // ── S2 (1.2–3.2s): droplets gather toward cluster zones ─────────────
     droplets.forEach(function (d) {
-      var pull = CLUSTERS[d.cluster];
       var angle = Math.random() * Math.PI * 2;
-      var dist  = randBetween(8, pull.r * 0.7);
+      var dist  = rand(6, d.c.r * 0.65);
       introTl.to(d.el, {
         attr: {
-          cx: pull.cx + Math.cos(angle) * dist,
-          cy: pull.cy + Math.sin(angle) * dist
+          cx: d.c.cx + Math.cos(angle) * dist,
+          cy: d.c.cy + Math.sin(angle) * dist
         },
         duration: 2.0,
         ease: 'sine.inOut'
-      }, 1.1);
+      }, 1.2);
     });
 
-    // ── State 3 (~3.1–4.5s): collapse to centers, radii grow → goo merge ─
+    // ── S3 (3.2–4.8s): liquid mass forms — radii expand, goo merges ─────
     droplets.forEach(function (d) {
-      var pull = CLUSTERS[d.cluster];
       introTl.to(d.el, {
         attr: {
-          cx: pull.cx + randBetween(-6, 6),
-          cy: pull.cy + randBetween(-6, 6),
-          r:  d.r * randBetween(2.2, 3.4)
+          cx: d.c.cx + rand(-5, 5),
+          cy: d.c.cy + rand(-5, 5),
+          r:  d.r * rand(2.4, 3.6)
         },
-        duration: 1.4,
+        duration: 1.6,
         ease: 'power3.inOut'
-      }, 3.1);
+      }, 3.2);
     });
 
-    // ── State 4 (~4.5–5.3s): goo fades out, logo fades in ────────────────
+    // ── S4 (4.8–5.8s): cutting board structure appears ───────────────────
+    // goo cross-dissolves into logo SVG
     introTl.to('#gooWrap', {
       opacity: 0,
-      duration: 0.8,
+      duration: 1.0,
       ease: 'power2.inOut'
-    }, 4.5);
+    }, 4.8);
 
     introTl.to('#logoSvgWrap', {
       opacity: 1,
-      scale: 1,
-      duration: 0.8,
+      duration: 1.0,
       ease: 'power2.out'
-    }, 4.5);
+    }, 4.8);
 
-    // ── State 5 (~5.3–6.5s): typography appears ───────────────────────────
-    introTl.to('#logoType96', {
-      attr: { opacity: 1 },
-      y: 0,
-      duration: 0.7,
+    // ── S5 (5.8–6.7s): original traced 96 typography appears ─────────────
+    // logoType96Group is a <g> — use CSS opacity, not attr
+    introTl.to('#logoType96Group', {
+      opacity: 1,
+      duration: 0.75,
       ease: 'power3.out'
-    }, 5.3);
+    }, 5.8);
 
+    // ── S6 (6.3–7.1s): RANCH appears ────────────────────────────────────
     introTl.to('#logoTypeRanch', {
       attr: { opacity: 1 },
-      y: 0,
-      duration: 0.6,
+      duration: 0.65,
       ease: 'power3.out'
-    }, 5.7);
+    }, 6.3);
 
-    // ── State 6 (~6.6–7.5s): scale down, drift up, hero content fades in ─
+    // ── S7 (7.1–8.2s): food hero image fades in behind logo ─────────────
     introTl.to('#liquidStage', {
-      y: -28,
-      scale: 0.86,
-      duration: 0.9,
+      y: -32,
+      scale: 0.82,
+      duration: 1.1,
       ease: 'power2.inOut'
-    }, 6.6);
+    }, 7.1);
 
     introTl.to('#heroContent', {
       opacity: 1,
-      duration: 0.9,
+      duration: 1.1,
       ease: 'power2.out',
       onStart: function () {
-        document.getElementById('heroContent').style.pointerEvents = 'auto';
+        var hc = document.getElementById('heroContent');
+        if (hc) hc.style.pointerEvents = 'auto';
       }
-    }, 6.9);
+    }, 7.4);
+
+    // ── S8 (8.2s+): logo transitions to floating mode ────────────────────
+    // handled in onIntroComplete → startIdleFloat()
   }
 
   function onIntroComplete() {
-    // Hide intro overlay
+    if (done) return;
+    done = true;
+
     var intro = document.getElementById('liquidIntro');
-    if (intro) {
-      intro.classList.add('done');
-    }
-    // Start floating idle on logo
+    if (intro) intro.classList.add('done');
+
     var wrap = document.getElementById('logoSvgWrap');
-    if (wrap) {
-      wrap.classList.add('floating');
-      // Keep logo visible above hero bg inside hero section
-      wrap.style.position = 'absolute';
+    if (wrap) wrap.classList.add('floating');
+
+    // Transfer logo into hero section as persistent floating element
+    var stage = document.getElementById('liquidStage');
+    if (stage) {
+      stage.classList.add('idle-stage');
     }
-    // Start idle GSAP float (subtle, Apple-style)
+
     startIdleFloat();
   }
 
@@ -382,77 +373,68 @@ document.addEventListener('DOMContentLoaded', init);
     var stage = document.getElementById('liquidStage');
     if (!stage) return;
 
+    // Kill any lingering intro tl
+    if (idleTl) idleTl.kill();
+
+    // Gentle perpetual breath — Apple/luxury pacing
     idleTl = gsap.timeline({ repeat: -1, yoyo: true });
     idleTl.to(stage, {
-      y: '-=14',
-      scaleX: 1.014,
-      scaleY: 1.014,
-      duration: 3.2,
+      y: '-=12',
+      scale: 1.018,
+      duration: 3.6,
       ease: 'sine.inOut'
     });
   }
 
   function completeIntro() {
-    // Jump to final state instantly (skip / prefers-reduced-motion)
-    if (introTl) {
-      introTl.kill();
-      introTl = null;
-    }
-    gsap && gsap.set('#gooWrap',     { opacity: 0 });
-    gsap && gsap.set('#logoSvgWrap', { opacity: 1 });
-    gsap && gsap.set('#logoType96',  { attr: { opacity: 1 } });
-    gsap && gsap.set('#logoTypeRanch', { attr: { opacity: 1 } });
-    gsap && gsap.set('#liquidStage', { y: -28, scale: 0.86 });
+    if (done) return;
+    if (introTl) { introTl.kill(); introTl = null; }
 
-    var heroContent = document.getElementById('heroContent');
-    if (heroContent) {
-      heroContent.style.opacity = '1';
-      heroContent.style.pointerEvents = 'auto';
+    // Snap everything to final settled state
+    if (typeof gsap !== 'undefined') {
+      gsap.set('#gooWrap',          { opacity: 0 });
+      gsap.set('#logoSvgWrap',      { opacity: 1 });
+      gsap.set('#logoType96Group',  { opacity: 1 });
+      gsap.set('#logoTypeRanch',    { attr: { opacity: 1 } });
+      gsap.set('#liquidStage',      { y: -32, scale: 0.82 });
     }
+
+    var hc = document.getElementById('heroContent');
+    if (hc) {
+      hc.style.opacity = '1';
+      hc.style.pointerEvents = 'auto';
+    }
+
     onIntroComplete();
   }
 
   function initLiquidLogo() {
-    // Respect prefers-reduced-motion
+    // Respect prefers-reduced-motion — show final state instantly
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       var intro = document.getElementById('liquidIntro');
       if (intro) intro.style.display = 'none';
-      var heroContent = document.getElementById('heroContent');
-      if (heroContent) {
-        heroContent.style.opacity = '1';
-        heroContent.style.pointerEvents = 'auto';
-      }
+      var hc = document.getElementById('heroContent');
+      if (hc) { hc.style.opacity = '1'; hc.style.pointerEvents = 'auto'; }
       return;
     }
 
     createDroplets();
 
-    // Wait for GSAP to load then build timeline
     if (typeof gsap !== 'undefined') {
       buildTimeline();
     } else {
-      // Fallback: wait up to 2s for GSAP CDN
       var waited = 0;
-      var check = setInterval(function () {
+      var poll = setInterval(function () {
         waited += 100;
-        if (typeof gsap !== 'undefined') {
-          clearInterval(check);
-          buildTimeline();
-        } else if (waited >= 2000) {
-          clearInterval(check);
-          completeIntro();
-        }
+        if (typeof gsap !== 'undefined') { clearInterval(poll); buildTimeline(); }
+        else if (waited >= 2500)          { clearInterval(poll); completeIntro(); }
       }, 100);
     }
 
-    // Skip button
-    var skipBtn = document.getElementById('liquidSkip');
-    if (skipBtn) {
-      skipBtn.addEventListener('click', completeIntro);
-    }
+    var skip = document.getElementById('liquidSkip');
+    if (skip) skip.addEventListener('click', completeIntro);
   }
 
-  // Run after DOM ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initLiquidLogo);
   } else {

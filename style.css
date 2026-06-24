@@ -1361,3 +1361,32 @@ body.bossa-mode .nav {
     bottom: -44px;
   }
 }
+
+/* ============================================================
+   LIQUID IDENTITY MOTION SYSTEM — Implementation 009 patches
+   ============================================================ */
+
+/* idle-stage: settled position after intro completes */
+.liquid-stage.idle-stage {
+  transform: translateY(-32px) scale(0.82);
+}
+
+/* Floating logo: perpetual gentle breath via GSAP (CSS fallback) */
+.logo-svg-wrap.floating {
+  animation: logoBreath 3.6s ease-in-out infinite alternate;
+}
+
+@keyframes logoBreath {
+  from { transform: translateY(0px)   scale(1);     }
+  to   { transform: translateY(-12px) scale(1.018); }
+}
+
+/* S7: hero content revealed — ensure text readable over logo */
+#heroContent.visible {
+  z-index: 4;
+}
+
+/* Liquid intro overlay z-index audit */
+.liquid-intro { z-index: 20; }
+.hero-content { z-index: 5; }
+.hero-bg      { z-index: 1; }
