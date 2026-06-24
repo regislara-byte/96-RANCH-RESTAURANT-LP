@@ -35,6 +35,12 @@
         <li><a href="#events">Events</a></li>
         <li><a href="#location">Find Us</a></li>
         <li><a href="https://www.facebook.com/96ranch" target="_blank" rel="noopener" class="nav-cta">Message Us</a></li>
+        <li>
+          <button class="bossa-btn" id="bossaBtn" aria-label="Toggle Bossa Mode" aria-pressed="false" onclick="toggleBossa()">
+            <span class="bossa-icon">🌴</span>
+            <span class="bossa-label">Bossa</span>
+          </button>
+        </li>
       </ul>
       <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false" onclick="toggleMenu(this)">
         <span></span><span></span><span></span>
@@ -47,6 +53,9 @@
       <a href="#events" onclick="closeMenu()">Events</a>
       <a href="#location" onclick="closeMenu()">Find Us</a>
       <a href="https://www.facebook.com/96ranch" target="_blank" rel="noopener" onclick="closeMenu()" class="mobile-fb-cta">Message on Facebook</a>
+      <button class="bossa-btn bossa-btn-mobile" id="bossaBtnMobile" aria-label="Toggle Bossa Mode" aria-pressed="false" onclick="toggleBossa()" style="display:flex;width:100%;justify-content:center;border-radius:12px;padding:14px;">
+        <span class="bossa-icon">🌴</span>&nbsp;<span class="bossa-label" style="display:inline;">Bossa Mode</span>
+      </button>
     </div>
   </nav>
 
@@ -68,7 +77,280 @@
         <div class="hero-grain" aria-hidden="true"></div>
       </div>
 
-      <div class="hero-content">
+      <!-- ============================================================
+           LIQUID LOGO HERO — Implementation 007
+      ============================================================ -->
+      <div class="liquid-intro" id="liquidIntro" aria-hidden="true">
+        <div class="liquid-stage" id="liquidStage">
+
+          <!-- SVG filter for goo metaball effect -->
+          <svg class="liquid-filters" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <filter id="goo" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blur" />
+                <feColorMatrix in="blur" mode="matrix"
+                  values="1 0 0 0 0
+                          0 1 0 0 0
+                          0 0 1 0 0
+                          0 0 0 28 -10"
+                  result="goo" />
+                <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+              </filter>
+            </defs>
+          </svg>
+
+          <!-- GOO droplet layer -->
+          <div class="goo-wrap" id="gooWrap">
+            <svg class="goo-svg" id="gooSvg" viewBox="0 0 500 708" xmlns="http://www.w3.org/2000/svg">
+              <g id="gooLayer" filter="url(#goo)"></g>
+            </svg>
+          </div>
+
+          <!-- Final traced logo SVG (hidden until State 4) -->
+          <!-- viewBox: 500x708 matching pixel-extracted aspect ratio -->
+          <div class="logo-svg-wrap" id="logoSvgWrap">
+            <svg class="logo-svg" id="logoSvg" viewBox="0 0 500 708" xmlns="http://www.w3.org/2000/svg" aria-label="96 Ranch liquid logo">
+              <defs>
+                <!-- Glossy dark ink gradient — reads as liquid black on black hero -->
+                <linearGradient id="inkGloss" x1="25%" y1="0%" x2="75%" y2="100%">
+                  <stop offset="0%"   stop-color="#3a3a3a" />
+                  <stop offset="20%"  stop-color="#1e1e1e" />
+                  <stop offset="55%"  stop-color="#0d0d0d" />
+                  <stop offset="100%" stop-color="#050505" />
+                </linearGradient>
+                <radialGradient id="inkSpecular" cx="32%" cy="28%" r="52%">
+                  <stop offset="0%"   stop-color="#555" stop-opacity="0.9" />
+                  <stop offset="45%"  stop-color="#191919" />
+                  <stop offset="100%" stop-color="#060606" />
+                </radialGradient>
+                <!-- Wet ink highlight stroke -->
+                <filter id="inkShadow" x="-5%" y="-5%" width="110%" height="110%">
+                  <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.8"/>
+                </filter>
+              </defs>
+
+              <g id="logoMark" filter="url(#inkShadow)">
+
+                <!--
+                  ══════════════════════════════════════════════
+                  HANDLE + KNOB (top)
+                  Pixel data: top y=20, center x=249
+                  Knob width ~86px at y=40, narrows to ~65px at y=130
+                  Hole: ellipse cx=249 cy=75 rx=14 ry=16
+                  ══════════════════════════════════════════════
+                -->
+                <path
+                  id="logoHandle"
+                  fill-rule="evenodd"
+                  fill="url(#inkGloss)"
+                  stroke="rgba(255,255,255,0.1)"
+                  stroke-width="0.8"
+                  d="
+                    M249,20
+                    C268,20 292,35 292,58
+                    C292,82 278,101 260,108
+                    L258,135 L240,135 L238,108
+                    C220,101 206,82 206,58
+                    C206,35 230,20 249,20 Z
+
+                    M249,60
+                    C240,60 234,67 234,75
+                    C234,83 241,90 249,90
+                    C257,90 264,83 264,75
+                    C264,67 258,60 249,60 Z
+                  "
+                />
+
+                <!--
+                  ══════════════════════════════════════════════
+                  CUTTING BOARD FRAME (main body)
+                  Pixel data:
+                    shoulders at y=153: x=214-280
+                    widens organically to widest at y=281: x=115-387
+                    sides taper slightly, bottom liquid drip blob
+                    inner white cavity: roughly x=162-362, y=200-590
+                  ══════════════════════════════════════════════
+                -->
+                <path
+                  id="logoBoard"
+                  fill-rule="evenodd"
+                  fill="url(#inkSpecular)"
+                  stroke="rgba(255,255,255,0.08)"
+                  stroke-width="0.8"
+                  d="
+                    M215,138
+                    C222,136 236,134 249,134
+                    C262,134 276,136 283,138
+                    C310,148 360,172 380,200
+                    C400,228 405,265 400,295
+                    C396,320 388,345 385,380
+                    C382,415 385,450 383,490
+                    C380,530 372,565 362,590
+                    C348,618 320,638 295,648
+                    C282,654 270,658 258,662
+                    C264,670 268,680 264,690
+                    C260,700 249,705 249,705
+                    C249,705 238,700 234,690
+                    C230,680 234,670 240,662
+                    C228,658 216,654 203,648
+                    C178,638 150,618 136,590
+                    C126,565 118,530 115,490
+                    C113,450 116,415 113,380
+                    C111,345 103,320 99,295
+                    C94,265 99,228 119,200
+                    C139,172 188,148 215,138 Z
+
+                    M168,210
+                    C178,205 200,200 249,200
+                    C298,200 320,205 330,210
+                    C350,220 358,240 358,260
+                    L358,560
+                    C358,575 348,588 333,592
+                    C308,598 280,600 249,600
+                    C218,600 190,598 165,592
+                    C150,588 140,575 140,560
+                    L140,260
+                    C140,240 148,220 168,210 Z
+                  "
+                />
+
+                <!--
+                  ══════════════════════════════════════════════
+                  SPOON (left side)
+                  Bowl: center ~(92,282), width ~77px, height ~90px
+                  Handle: x≈88-95, y=370-630, thin ~8px
+                  Liquid drip merges into board bottom
+                  ══════════════════════════════════════════════
+                -->
+                <path
+                  id="logoSpoon"
+                  fill="url(#inkGloss)"
+                  stroke="rgba(255,255,255,0.12)"
+                  stroke-width="0.6"
+                  d="
+                    M92,215
+                    C115,215 135,232 138,258
+                    C140,275 134,293 122,305
+                    C113,314 105,318 98,320
+                    L95,370
+                    L90,370
+                    L87,320
+                    C79,318 71,314 62,305
+                    C50,293 44,275 46,258
+                    C49,232 69,215 92,215 Z
+
+                    M88,370
+                    C86,390 84,420 84,460
+                    C84,500 86,530 88,555
+                    C88,568 90,578 93,582
+                    C96,578 98,568 98,555
+                    C100,530 102,500 102,460
+                    C102,420 100,390 98,370
+                    Z
+                  "
+                />
+
+                <!--
+                  ══════════════════════════════════════════════
+                  FORK (right side)
+                  Tines: 3 prongs, approx x=376,386,396 top y=182
+                  Handle: x≈399-412, y=282-555, width ~14px
+                  Base: merges with board/liquid drip
+                  ══════════════════════════════════════════════
+                -->
+                <path
+                  id="logoFork"
+                  fill="url(#inkGloss)"
+                  stroke="rgba(255,255,255,0.12)"
+                  stroke-width="0.6"
+                  d="
+                    M374,182 L374,248
+                    M385,182 L385,248
+                    M396,182 L396,248
+
+                    M370,248
+                    C370,262 374,272 385,274
+                    C396,272 400,262 400,248
+                    L400,182 L396,182 L396,248
+                    L385,250 L374,248 L374,182 L370,182 Z
+
+                    M378,274
+                    L378,555
+                    C378,568 382,578 385,582
+                    C388,578 392,568 392,555
+                    L392,274
+                    Z
+                  "
+                />
+
+                <!--
+                  ══════════════════════════════════════════════
+                  LIQUID BOTTOM BLOB (ink pooling at base)
+                  Pixel data: y≈605-670, organic drip shape
+                  ══════════════════════════════════════════════
+                -->
+                <path
+                  id="logoDrip"
+                  fill="url(#inkGloss)"
+                  d="
+                    M180,618
+                    C190,610 215,605 249,605
+                    C283,605 308,610 318,618
+                    C335,630 342,648 336,662
+                    C328,678 305,688 278,692
+                    C272,693 264,694 260,690
+                    C256,686 254,680 249,680
+                    C244,680 242,686 238,690
+                    C234,694 226,693 220,692
+                    C193,688 170,678 162,662
+                    C156,648 163,630 180,618 Z
+                  "
+                />
+
+              </g>
+
+              <!-- Typography: 96 -->
+              <text
+                id="logoType96"
+                class="logo-type logo-type--96"
+                x="249" y="470"
+                text-anchor="middle"
+                dominant-baseline="middle"
+                font-family="Georgia, 'Times New Roman', serif"
+                font-size="180"
+                font-weight="700"
+                fill="rgba(15,15,15,0.95)"
+                letter-spacing="-4"
+                opacity="0"
+              >96</text>
+
+              <!-- Typography: RANCH -->
+              <text
+                id="logoTypeRanch"
+                class="logo-type logo-type--ranch"
+                x="249" y="572"
+                text-anchor="middle"
+                font-family="'Inter', 'Helvetica Neue', sans-serif"
+                font-size="52"
+                font-weight="700"
+                fill="rgba(20,20,20,0.95)"
+                letter-spacing="18"
+                opacity="0"
+              >RANCH</text>
+
+            </svg>
+          </div>
+
+        </div><!-- /liquid-stage -->
+
+        <!-- Skip button -->
+        <button class="liquid-skip" id="liquidSkip" aria-label="Skip intro animation">
+          Skip
+        </button>
+
+      </div><!-- /liquid-intro -->
+
+      <div class="hero-content" id="heroContent" style="opacity:0;pointer-events:none;">
         <div class="hero-text">
           <p class="hero-eyebrow">Your Ultimate Food Destination</p>
           <h1 class="hero-title">
@@ -608,9 +890,15 @@
     <a href="tel:+639090050554" class="sticky-call">Call / Text</a>
   </div>
 
+  <!-- Bossa Mode Audio -->
+  <audio id="bossaAudio" loop preload="none">
+    <source src="assets/audio/bossa-mode.mp3" type="audio/mpeg" />
+  </audio>
+
   <!-- Scroll progress -->
   <div id="scroll-progress" aria-hidden="true"></div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
